@@ -13,7 +13,7 @@ class User(AbstractUser):
 class Listing(models.Model):
     title= models.CharField(max_length=30)
     description=models.CharField(max_length=300)
-    imgUrl=models.CharField(max_length=1000)
+    imageurl = models.ImageField(upload_to='listing_images/', null=True, blank=True)
     price=models.FloatField()
     isActive= models.BooleanField(default=True)
     owner=models.ForeignKey(User, on_delete=models.CASCADE, blank=True,null=True,related_name="user")

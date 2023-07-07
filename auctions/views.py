@@ -9,17 +9,45 @@ from .models import User, Category, Listing
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    activeListing = Listing.objects.filter(isActive=True)
+    return render(request, "auctions/index.html",{
+        "listings": activeListing
+    })
 
 def createListing(request):
     if request.method == "GET":
         # Handle the form submission
         # ...
-        allCategories=Category.objects.all()
+        allCategories = Category.objects.all()
 
-        return render(request, "auctions/create.html",{
-            "categories" : allCategories
-        }) 
+        return render(request, "auctions/create.html", {
+            "categories": allCategories
+        })
+    else:
+        # Get the data from the form
+        title = request.POST['title']
+        description = request.POST['description']
+        imageurl = request.POST['imageurl']
+        price = request.POST['price']
+        category = request.POST['category']
+        # We can know who the user is
+        currentUser = request.user
+        # Get all the content about the particular category
+        categoryData = Category.objects.get(categoryName=category)
+        # Create a new listing object
+        newListing = Listing(
+            title=title,
+            description=description,
+            imageurl=imageurl,
+            price=float(price),
+            category=categoryData,
+            owner=currentUser
+        )
+        # Insert that object into our database
+        newListing.save()
+        # Redirect to the index page
+        return HttpResponseRedirect(reverse('index'))
+
 
 
 def login_view(request):

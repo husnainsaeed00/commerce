@@ -22,11 +22,11 @@
         </div>
         <div class="mb-3">
             <label for="category">Choose a Category:</label>
-                <select name="cars" id="cars">
+            <select name="category" id="category">
                 {% for cat in categories %}
-                    <option value="volvo">{{cat}}</option>
+                    <option value="{{ cat }}">{{ cat }}</option>
                 {% endfor %}
-                </select>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
